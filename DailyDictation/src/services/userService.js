@@ -37,7 +37,7 @@ export const createUser = async (data) => {
     return result;
 }
 
-export const getTopUserList = async () => {
-    const result = await get(`users/videoLessons`);
+export const getTopUserList = async (limit = 30) => {
+    const result = await get(`users?_limit=${limit}&_sort=endTime`);
     return result;
 }

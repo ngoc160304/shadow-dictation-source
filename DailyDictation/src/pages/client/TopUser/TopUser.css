@@ -1,4 +1,6 @@
-.top-user {}
+.top-user {
+    margin: 16px auto;
+}
 
 .top-user .table {
     width: 100%;
@@ -10,43 +12,4 @@
     padding: 12px;
     border: 1px solid #ddd;
     text-align: left;
-}
-
-@media screen and (max-width: 768px) {
-
-    table,
-    thead,
-    tbody,
-    th,
-    td,
-    tr {
-        display: block;
-        width: 100%;
-    }
-
-    tr {
-        margin-bottom: 15px;
-    }
-
-    th {
-        display: none;
-        /* Ẩn tiêu đề bảng */
-    }
-
-    td {
-        position: relative;
-        padding-left: 50%;
-        /* Để tạo khoảng trống cho nhãn */
-    }
-
-    td:before {
-        content: attr(data-label);
-        /* Gán nội dung nhãn theo thứ tự cột */
-        position: absolute;
-        left: 0;
-        width: 45%;
-        padding-left: 10px;
-        font-weight: bold;
-        white-space: nowrap;
-    }
 }
