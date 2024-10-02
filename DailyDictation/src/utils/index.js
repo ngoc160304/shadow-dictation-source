@@ -40,6 +40,19 @@ export const postEndTime = async (path = "end-time") => {
     }
 }
 
+export const postLogout = async () => {
+    const token = localStorage.getItem("token");
+    await fetch(DOMAIN + 'logout', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": csrfToken,
+            'Authorization': `Bearer ${token}`,
+        },
+    })
+}
+
+
 export const postStartTime = async (path = "start-time") => {
     const token = localStorage.getItem("token");
     console.log("OK")

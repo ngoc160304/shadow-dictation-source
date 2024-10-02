@@ -4,13 +4,15 @@ import { deleteCookie, getCookie } from "../../helpers/cookie";
 import { authenClientFailure } from "../../actions/authentication";
 import { useEffect, useRef, useState } from "react";
 import { getUserById } from "../../services/userService";
+import { postLogout } from "../../utils";
 const Header = () => {
     const auth = useSelector((state) => state.authenReducerClient);
     const dispatch = useDispatch();
-    const handleLogout = () => {
+    const handleLogout = async () => {
         deleteCookie("id");
         localStorage.removeItem('token');
         dispatch(authenClientFailure(""));
+        await postLogout();
     }
     const [user, setUser] = useState({});
     const fetchApi = async () => {
