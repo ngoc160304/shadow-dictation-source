@@ -6,7 +6,8 @@ import { authenClientFailure, authenClientSuccess } from "../../../actions/authe
 import { setCookie } from "../../../helpers/cookie"
 import { useDispatch, useSelector } from "react-redux";
 import 'react-toastify/dist/ReactToastify.css';
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+import { postStartTime } from "../../../utils"
 // const emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
 const Login = () => {
@@ -18,22 +19,31 @@ const Login = () => {
         if (isAuthenticated) {
             navigate('/')
         }
-    }, [])
+    }, []);
+    const [isLoading, setIsLoading] = useState(false);
     const onSubmit = async (data) => {
         try {
+            setIsLoading(true);
             if (data.username === "") {
                 toast("Vui lòng nhập tên !");
+                setIsLoading(false);
                 return;
             }
             if (data.password === "") {
                 toast("Vui lòng nhập mật khẩu !");
+                setIsLoading(false);
                 return;
             }
-
             const result = await getUser(data);
-            dispatch(authenClientSuccess(result.token));
-            setCookie("id", result.user.id, 365)
-            navigate("/")
+            // await postStartTime();
+            if (result.token) {
+                dispatch(authenClientSuccess(result.token));
+                setCookie("id", result.user.id, 365)
+                navigate("/")
+            } else {
+                toast("Tài khoản không tồn tại !");
+                setIsLoading(false)
+            }
         } catch (error) {
             navigate("/login")
         }
@@ -68,9 +78,14 @@ const Login = () => {
                         required
                     />
                 </div>
-                <button type="submit" className="btn">
-                    Login
+                <button type="submit" className="btn" disabled={isLoading}>
+                    {
+                        isLoading ? (
+                            <i className="loader-login-register"></i>
+                        ) : "Login"
+                    }
                 </button>
+
             </form>
         </>
     )

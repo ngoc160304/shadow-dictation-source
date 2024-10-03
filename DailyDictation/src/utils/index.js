@@ -28,7 +28,8 @@ export const postEndTime = async (path = "end-time") => {
         const option = {
             endTime: new Date(),
         }
-        await fetch(DOMAIN + path, {
+        console.log("endtime : ", option);
+        const response = await fetch(DOMAIN + path, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -37,30 +38,41 @@ export const postEndTime = async (path = "end-time") => {
                 body: JSON.stringify(option)
             },
         })
+        const result = await response.json();
+        return result;
     }
 }
 
-export const postLogout = async () => {
+
+export const postLogout = async (path = "logout") => {
     const token = localStorage.getItem("token");
-    await fetch(DOMAIN + 'logout', {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRF-TOKEN": csrfToken,
-            'Authorization': `Bearer ${token}`,
-        },
-    })
+    if (token) {
+        const option = {
+            endTime: new Date(),
+        }
+        const response = await fetch(DOMAIN + path, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": csrfToken,
+                'Authorization': `Bearer ${token}`,
+                body: JSON.stringify(option)
+            },
+        })
+        const result = await response.json();
+        return result;
+    }
 }
 
 
 export const postStartTime = async (path = "start-time") => {
     const token = localStorage.getItem("token");
-    console.log("OK")
     if (token) {
         const option = {
             startTime: new Date(),
         }
-        await fetch(DOMAIN + path, {
+        console.log("start-time", option);
+        const response = await fetch(DOMAIN + path, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -68,7 +80,9 @@ export const postStartTime = async (path = "start-time") => {
                 'Authorization': `Bearer ${token}`,
                 body: JSON.stringify(option)
             },
-        })
+        });
+        const result = await response.json();
+        return result;
     }
 }
 

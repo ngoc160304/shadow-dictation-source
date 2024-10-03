@@ -1,4 +1,13 @@
-const initialValueClient = localStorage.getItem("token")
+import { getCookie } from "../helpers/cookie";
+
+const id = getCookie("id");
+let initialValueClient;
+if (id) {
+    initialValueClient = localStorage.getItem("token")
+} else {
+    localStorage.clear();
+    initialValueClient = null;
+}
 export const authenReducerClient = (state = initialValueClient || "", action) => {
     if (action.type === "SUCCESS") {
         return action.status;

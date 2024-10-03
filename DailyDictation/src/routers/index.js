@@ -7,6 +7,7 @@ import LayoutClient from "../layouts/LayoutClient";
 import LayoutLogin from "../layouts/LayoutLogin";
 import ListenAndType from "../pages/client/Listen&Type";
 import TopUser from "../pages/client/TopUser";
+import VideoLession from "../pages/client/VideoLession";
 // import PrivateRouter from "../components/client/PrivateRouter";
 const routers = [
     {
@@ -35,6 +36,10 @@ const routers = [
             {
                 path: "/top-user",
                 element: <TopUser />
+            },
+            {
+                path: "/video-lession",
+                element: <VideoLession />
             }
         ]
     },

@@ -54,6 +54,8 @@ const Setting = (props) => {
         const number = parseInt(e.target.value);
         setPlaybackCount(number);
         setIsPlaying(false);
+        setCountPlayback(1);
+        waveSurferRef.current.seekTo(0);
         waveSurferRef.current.pause();
 
     }

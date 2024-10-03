@@ -1,4 +1,4 @@
-import { get, post, postLogin, postRegister, postTest } from "../utils";
+import { get, post, postEndTime, postLogin, postLogout, postRegister, postStartTime, postTest } from "../utils";
 import "core-js/stable/atob";
 export const getUser = async (data) => {
     try {
@@ -38,6 +38,19 @@ export const createUser = async (data) => {
 }
 
 export const getTopUserList = async (limit = 30) => {
-    const result = await get(`users?_limit=${limit}&_sort=endTime`);
+    const result = await get(`users/top?_limit=${limit}&_sort=endTime`);
+    return result;
+}
+export const userLogout = async () => {
+    const result = await postLogout('logout');
+    return result;
+}
+export const userStartTime = async () => {
+    const result = await postStartTime('start-time');
+    return result;
+}
+
+export const userEndTime = async () => {
+    const result = await postEndTime('end-time');
     return result;
 }

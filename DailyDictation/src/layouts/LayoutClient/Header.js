@@ -3,16 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteCookie, getCookie } from "../../helpers/cookie";
 import { authenClientFailure } from "../../actions/authentication";
 import { useEffect, useRef, useState } from "react";
-import { getUserById } from "../../services/userService";
+import { getUserById, userLogout } from "../../services/userService";
 import { postLogout } from "../../utils";
 const Header = () => {
     const auth = useSelector((state) => state.authenReducerClient);
     const dispatch = useDispatch();
     const handleLogout = async () => {
         deleteCookie("id");
+        await userLogout();
         localStorage.removeItem('token');
         dispatch(authenClientFailure(""));
-        await postLogout();
     }
     const [user, setUser] = useState({});
     const fetchApi = async () => {
@@ -43,10 +43,10 @@ const Header = () => {
                             <Link to="/all-topics">All Exercises</Link>
                         </li>
                         <li>
-                            <Link href="#">Top Users</Link>
+                            <Link to="/top-user">Top Users</Link>
                         </li>
                         <li>
-                            <Link href="#">Video Lessons</Link>
+                            <Link to="/video-lession">Video Lessons</Link>
                         </li>
                         <li>
                             <Link href="#">Help Me</Link>
@@ -88,10 +88,10 @@ const Header = () => {
                         <Link to="/all-topics">All Exercises</Link>
                     </li>
                     <li>
-                        <Link href="#">Top Users</Link>
+                        <Link to="/top-user">Top Users</Link>
                     </li>
                     <li>
-                        <Link href="#">Video Lessons</Link>
+                        <Link to="/video-lession">Video Lessons</Link>
                     </li>
                     <li>
                         <Link href="#">Help Me</Link>

@@ -6,6 +6,7 @@ use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\TipController;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\TranscriptController;
+use App\Http\Controllers\VideoLessionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/users', [AuthController::class, 'getUserById']);
 Route::post('/logout', [AuthController::class, 'logout']);
+Route::get('/users/top', [AuthController::class, 'topUser']);
 
 // Route::middleware(['check.token'])->group(function () {
 
@@ -49,3 +51,5 @@ Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/audioUrles', [AudioUrlController::class, 'getAudioByIdExerciseLimit']);
     Route::get('/audioUrl', [AudioUrlController::class, 'getAudioById']);
 
+    //videoLession
+    Route::get('/videoLessons', [VideoLessionController::class, 'index']);

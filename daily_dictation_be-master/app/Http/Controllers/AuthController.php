@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -46,7 +47,29 @@ class AuthController extends Controller
         ], 200);
     }
 
-    public function login(Request $request)
+    public function getUserById (Request $request) {
+        $id = $request->query('id');
+
+        if (!$id) {
+            return response()->json([
+                'error' => 'User id is required'
+            ], 400);
+        }
+
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json([
+                'error' => 'User not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'users' => $user
+        ], 200);
+    }
+
+        public function login(Request $request)
     {
         $request->validate([
             'username' => 'required|string',
@@ -88,46 +111,45 @@ class AuthController extends Controller
         }
 
         $endTime = now();
-        $startTime = $user->startTime;
+        $startTime = Carbon::parse($user->startTime);
 
         $diffInSeconds = $endTime->diffInSeconds($startTime);
-
-        $hours = floor($diffInSeconds / 3600);
-        $minutes = floor(($diffInSeconds / 60) % 60);
-        $seconds = $diffInSeconds % 60;
-
-        $formattedDuration = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
-
+        $totalLoggedInTime = $user->totalLoggedInTime ?? 0;
         $user->update([
+            'totalLoggedInTime' => $totalLoggedInTime + $diffInSeconds,
             'endTime' => $endTime,
             'remember_token' => null,
         ]);
 
         return response()->json([
             'message' => 'Logout successful',
-            'sessionDuration' => $formattedDuration,
+            'totalLoggedInTime' => gmdate('H:i:s', $user->totalLoggedInTime),
         ], 200);
     }
 
-    public function getUserById (Request $request) {
-        $id = $request->query('id');
+    public function topUser(Request $request)
+    {
+        $limit = $request->query('_limit', 30);
+        $sort = $request->query('_sort', 'endTime');
 
-        if (!$id) {
-            return response()->json([
-                'error' => 'User id is required'
-            ], 400);
+        $users = User::get()->map(function ($user) {
+            $totalHours = floor(($user->totalLoggedInTime ?? 0) / 3600);
+            $user->totalHours = $totalHours > 21 ? '21+' : $totalHours;
+            return $user;
+        });
+
+        if ($sort === 'endTime') {
+            $sortedUsers = $users->sortByDesc('endTime');
+        } else {
+            $sortedUsers = $users->sortByDesc(function ($user) {
+                return $user->totalHours === '21+' ? 999 : $user->totalHours;
+            });
         }
 
-        $user = User::find($id);
-
-        if (!$user) {
-            return response()->json([
-                'error' => 'User not found'
-            ], 404);
-        }
+        $limitedUsers = $sortedUsers->take($limit)->values();
 
         return response()->json([
-            'users' => $user
+            'users' => $limitedUsers
         ], 200);
     }
 }

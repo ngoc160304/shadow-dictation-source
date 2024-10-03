@@ -35,6 +35,7 @@ const CompleteExercise = (props) => {
     }
     const handleRepeatExercise = () => {
         setCompleteExercise(false);
+        setIsPlaying(false)
     }
     return (
         <div className="complete-exercise">

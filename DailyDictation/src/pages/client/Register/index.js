@@ -3,12 +3,14 @@ import { useNavigate } from "react-router-dom"
 import { createUser } from "../../../services/userService";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useState } from "react";
 
 const passwordRegex = /^(?=.*[A-Z])[A-Za-z\d]{6,}$/;
 
 const Register = () => {
     const { register, handleSubmit } = useForm();
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
     const onSubmit = async (data) => {
         try {
             const { username, password, passwordConfirm } = data
@@ -29,10 +31,14 @@ const Register = () => {
             delete data.passwordConfirm;
             data.dob = "2001-11-19"
             data.bio = "hello bro"
+            setIsLoading(true);
             const result = await createUser(data);
             console.log(result);
             navigate("/login");
+
         } catch (error) {
+            setIsLoading(false);
+            toast("Đăng ký tài khoản thất bại !");
             navigate("/register")
         }
     }
@@ -78,8 +84,10 @@ const Register = () => {
                         required
                     />
                 </div>
-                <button type="submit" className="btn">
-                    Register
+                <button type="submit" className="btn" disabled={isLoading}>
+                    {
+                        isLoading ? <i className="loader-login-register" ></i> : "Register"
+                    }
                 </button>
             </form>
 

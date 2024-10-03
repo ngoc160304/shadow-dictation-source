@@ -96,7 +96,7 @@ const TestAndAudio = () => {
                 waveSurferRef.current.destroy();
             };
         }
-    }, [keyReplay, idExercise]);
+    }, [keyReplay, idExercise, completEXercise]);
 
     const handleRepayKey = () => {
         setIsPlaying(true);

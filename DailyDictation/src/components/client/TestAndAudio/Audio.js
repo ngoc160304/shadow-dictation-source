@@ -80,8 +80,6 @@ const Audio = (props) => {
     const handleCheckText = () => {
         if (audio.length) {
             const answer = textareaRef.current.value.trim().split(/\s+/).join(" ");
-            console.log(answer.toLowerCase());
-            console.log(audio[pagination].textEng.toLowerCase());
             if (answer.toLowerCase() === audio[pagination].textEng.toLowerCase()) {
                 setIsShowAnswer(true);
                 setIsCorrect(true);

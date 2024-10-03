@@ -1,3 +1,7 @@
+.vedio-lession {
+    margin: 16px 0;
+}
+
 .vedio-lession .story-list {
     list-style: none;
     padding: 0;
@@ -6,6 +10,12 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
     width: 100%;
+
+
+}
+
+.vedio-lession h1 {
+    font-size: 19px;
 }
 
 .vedio-lession .story-list li {
